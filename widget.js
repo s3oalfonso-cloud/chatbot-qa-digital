@@ -37,8 +37,8 @@
     '}',
     '#ae-header-left { display:flex; align-items:center; gap:12px; }',
     '#ae-client-logo {',
-    '  height:80px; width:auto; max-width:160px;',
-    '  object-fit:contain; border-radius:6px; background:white; padding:2px 6px;',
+    '  height:88px; width:88px;',
+    '  object-fit:contain; border-radius:8px; background:white; padding:3px;',
     '}',
     '#ae-client-name { font-weight:700; font-size:22px; }',
     '#ae-chat-close { cursor:pointer; font-size:22px; line-height:1; }',
@@ -116,7 +116,7 @@
     '  display:flex; flex-direction:column; align-items:center;',
     '  padding:12px 24px 16px;',
     '}',
-    '#ae-qa-logo { height:44px; width:auto; opacity:0.90; }',
+    '#ae-qa-logo { height:58px; width:auto; opacity:0.90; }',
     '#ae-qa-logo-link { display:flex; align-items:center; }',
     '#ae-powered { font-size:12px; color:#64748b; margin-top:4px; font-weight:500; }',
     /* ── Callback view ── */
@@ -366,6 +366,7 @@
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/^[-*]\s+(.+)$/gm, '&bull; $1')
+      .replace(/(^|[\s])(https?:\/\/[^\s<"]+)/g, '$1<a href="$2" target="_blank" rel="noopener" style="color:#0369a1;text-decoration:underline">$2</a>')
       .replace(/\n/g, '<br>');
     div.innerHTML = html;
     return div;
