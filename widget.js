@@ -208,7 +208,7 @@
   var actionHtml = '<div id="ae-action-buttons">';
   if (CLIENT_PHONE) {
     actionHtml +=
-      '<a href="tel:' + CLIENT_PHONE + '" class="ae-action-btn">' +
+      '<a href="tel:' + CLIENT_PHONE + '" id="ae-call-btn" class="ae-action-btn">' +
         '<span class="ae-action-icon">&#128222;</span>Call Us' +
       '</a>';
   }
@@ -309,6 +309,7 @@
   var cbTextGroup  = document.getElementById('ae-cb-text-group');
   var cbMessage    = document.getElementById('ae-cb-message');
   var cbSendBtn    = document.getElementById('ae-cb-send');
+  var callBtn      = document.getElementById('ae-call-btn');
   var sessionId    = null;
   var isOpen       = false;
 
@@ -335,6 +336,14 @@
 
   btn.addEventListener('click', togglePanel);
   closeBtn.addEventListener('click', togglePanel);
+  if (callBtn) {
+    callBtn.addEventListener('click', function () {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', API_URL + '/api/chat/call-click');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify({ session_id: sessionId }));
+    });
+  }
   callbackBtn.addEventListener('click', showCallbackView);
   callbackBack.addEventListener('click', showChatView);
   document.getElementById('ae-scroll-up').addEventListener('click', function () {
