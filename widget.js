@@ -37,8 +37,8 @@
     '}',
     '#ae-header-left { display:flex; align-items:center; gap:12px; }',
     '#ae-client-logo {',
-    '  height:65px; width:auto; max-width:130px;',
-    '  object-fit:contain; border-radius:6px; background:white; padding:4px 8px;',
+    '  height:80px; width:auto; max-width:160px;',
+    '  object-fit:contain; border-radius:6px; background:white; padding:2px 6px;',
     '}',
     '#ae-client-name { font-weight:700; font-size:22px; }',
     '#ae-chat-close { cursor:pointer; font-size:22px; line-height:1; }',
@@ -116,7 +116,7 @@
     '  display:flex; flex-direction:column; align-items:center;',
     '  padding:12px 24px 16px;',
     '}',
-    '#ae-qa-logo { height:112px; width:auto; opacity:0.90; }',
+    '#ae-qa-logo { height:44px; width:auto; opacity:0.90; }',
     '#ae-qa-logo-link { display:flex; align-items:center; }',
     '#ae-powered { font-size:12px; color:#64748b; margin-top:4px; font-weight:500; }',
     /* ── Callback view ── */
@@ -360,10 +360,12 @@
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
+      .replace(/^#{1,3}\s+(.+)$/gm, '<strong>$1</strong>')
       .replace(/\[cta\]([\s\S]*?)\[\/cta\]/g, '<em style="color:#38bdf8;font-style:italic">$1</em>')
       .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:#0369a1;text-decoration:underline">$1</a>')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/^[-*]\s+(.+)$/gm, '&bull; $1')
       .replace(/\n/g, '<br>');
     div.innerHTML = html;
     return div;
