@@ -37,7 +37,7 @@
     '}',
     '#ae-header-left { display:flex; align-items:center; gap:12px; }',
     '#ae-client-logo {',
-    '  height:110px; width:110px;',
+    '  height:74px; width:74px;',
     '  object-fit:contain; border-radius:8px; background:white; padding:3px;',
     '}',
     '#ae-client-name { font-weight:700; font-size:17px; }',
@@ -116,7 +116,7 @@
     '  display:flex; flex-direction:column; align-items:center;',
     '  padding:12px 24px 16px;',
     '}',
-    '#ae-qa-logo { height:80px; width:auto; opacity:0.90; }',
+    '#ae-qa-logo { height:54px; width:auto; opacity:0.90; }',
     '#ae-qa-logo-link { display:inline-flex; align-items:center; outline:none; border:none; }',
     '#ae-powered { font-size:12px; color:#64748b; margin-top:4px; font-weight:500; }',
     /* ── Callback view ── */
@@ -363,10 +363,10 @@
       .replace(/^#{1,3}\s+(.+)$/gm, '<strong>$1</strong>')
       .replace(/\[cta\]([\s\S]*?)\[\/cta\]/g, '<em style="color:#38bdf8;font-style:italic">$1</em>')
       .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:#0369a1;text-decoration:underline">$1</a>')
+      .replace(/(^|[^"'=(>])(https?:\/\/[^\s<"*]+)/g, '$1<a href="$2" target="_blank" rel="noopener" style="color:#0369a1;text-decoration:underline">$2</a>')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/^[-*]\s+(.+)$/gm, '&bull; $1')
-      .replace(/(^|[\s])(https?:\/\/[^\s<"]+)/g, '$1<a href="$2" target="_blank" rel="noopener" style="color:#0369a1;text-decoration:underline">$2</a>')
       .replace(/\n/g, '<br>');
     div.innerHTML = html;
     return div;
