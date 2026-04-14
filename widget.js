@@ -40,7 +40,7 @@
     '  height:110px; width:110px;',
     '  object-fit:contain; border-radius:8px; background:white; padding:3px;',
     '}',
-    '#ae-client-name { font-weight:700; font-size:22px; }',
+    '#ae-client-name { font-weight:700; font-size:17px; }',
     '#ae-chat-close { cursor:pointer; font-size:22px; line-height:1; }',
     /* ── Chat view ── */
     '#ae-chat-view { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; }',
@@ -116,8 +116,8 @@
     '  display:flex; flex-direction:column; align-items:center;',
     '  padding:12px 24px 16px;',
     '}',
-    '#ae-qa-logo { height:58px; width:auto; opacity:0.90; }',
-    '#ae-qa-logo-link { display:flex; align-items:center; }',
+    '#ae-qa-logo { height:80px; width:auto; opacity:0.90; }',
+    '#ae-qa-logo-link { display:inline-flex; align-items:center; outline:none; border:none; }',
     '#ae-powered { font-size:12px; color:#64748b; margin-top:4px; font-weight:500; }',
     /* ── Callback view ── */
     '#ae-callback-view { display:none; flex-direction:column; flex:1; min-height:0; overflow:hidden; }',
