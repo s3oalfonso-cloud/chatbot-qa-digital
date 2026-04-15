@@ -496,8 +496,8 @@
         }
       } else if (xhr.status === 429) {
         var fallback = CLIENT_PHONE
-          ? 'You\'ve reached the message limit. Please call us at ' + CLIENT_PHONE + '.'
-          : 'You\'ve reached the message limit for this session.';
+          ? 'We\'ve had a great conversation! For the best experience, I\'d recommend speaking directly with one of our specialists \u2014 they can give you personalized answers tailored to your business. Give us a call at ' + CLIENT_PHONE + ' or email us at ' + (CLIENT_EMAIL || 'hi@qadigitalads.com') + '.'
+          : 'We\'ve had a great conversation! For the best experience, please reach out to our team directly \u2014 they can give you personalized answers tailored to your business.';
         callback(null, fallback, false);
       } else {
         callback(new Error('API error'), null, false);
