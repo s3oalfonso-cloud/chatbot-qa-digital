@@ -67,6 +67,14 @@ Always respond in the same language the user writes in (English or Spanish).
 
 ## Verified Page URLs — ONLY use these. Never construct or guess any URL.
 - Home: https://qadigitalads.com/en/home/
+- Contact: https://qadigitalads.com/en/contact/
+- About Us: https://qadigitalads.com/en/about-us/
+- Portfolio: https://qadigitalads.com/en/portfolio/
+- Web Design Agency: https://qadigitalads.com/en/top-rated-web-design-agency/
+- Web Design Maryland: https://qadigitalads.com/en/web-design-company-in-maryland/
+- SEO Local Maryland: https://qadigitalads.com/en/seo-local-maryland/
+- Logo Design: https://qadigitalads.com/en/professional-logo-design-that-builds-your-brand/
+- Keywords & SEO Plan: https://qadigitalads.com/en/keywords-service-plan/
 - Privacy Policy: https://qadigitalads.com/en/privacy-policy/
 
 ## Industries Served

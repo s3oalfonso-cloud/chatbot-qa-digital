@@ -8,13 +8,19 @@
 
   var displayName = CLIENT_NAME || 'Chat with Us';
 
+  /* ── Google Fonts ───────────────────────────────────────────────────── */
+  var fontLink = document.createElement('link');
+  fontLink.rel = 'stylesheet';
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Montserrat:wght@400;500;600&display=swap';
+  document.head.appendChild(fontLink);
+
   /* ── Styles ─────────────────────────────────────────────────────────── */
   var style = document.createElement('style');
   style.textContent = [
     '#ae-chat-btn {',
     '  position:fixed; bottom:28px; right:28px;',
     '  width:60px; height:60px;',
-    '  background:#007994; border-radius:50%;',
+    '  background:#6248DA; border-radius:50%;',
     '  cursor:pointer; display:flex;',
     '  align-items:center; justify-content:center;',
     '  box-shadow:0 4px 16px rgba(0,0,0,0.18);',
@@ -28,19 +34,19 @@
     '  box-shadow:0 8px 32px rgba(0,0,0,0.18);',
     '  z-index:99999; overflow:hidden;',
     '  max-height:calc(100vh - 130px);',
-    '  font-family:-apple-system,BlinkMacSystemFont,sans-serif;',
+    '  font-family:"Montserrat",-apple-system,BlinkMacSystemFont,sans-serif;',
     '}',
     '#ae-chat-header {',
-    '  background:#007994; color:white;',
+    '  background:#1E385F; color:white;',
     '  padding:12px 18px;',
     '  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;',
     '}',
-    '#ae-header-left { display:flex; align-items:center; gap:12px; }',
+    '#ae-header-left { display:flex; align-items:center; gap:12px; flex:1; }',
     '#ae-client-logo {',
     '  height:74px; width:74px;',
-    '  object-fit:contain; border-radius:8px; background:white; padding:3px;',
+    '  object-fit:contain; border-radius:8px; background:white; padding:3px; flex-shrink:0;',
     '}',
-    '#ae-client-name { font-weight:700; font-size:17px; }',
+    '#ae-client-name { font-family:"Oswald",sans-serif; font-weight:600; font-size:18px; letter-spacing:0.5px; }',
     '#ae-chat-close { cursor:pointer; font-size:22px; line-height:1; }',
     /* ── Chat view ── */
     '#ae-chat-view { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; }',
@@ -59,7 +65,7 @@
     '  font-size:14px; line-height:1.55; max-width:88%;',
     '}',
     '.ae-msg.user {',
-    '  background:#007994; color:white;',
+    '  background:#6248DA; color:white;',
     '  align-self:flex-end; border-radius:12px 12px 4px 12px;',
     '}',
     '.ae-msg.assistant {',
@@ -79,11 +85,11 @@
     '  resize:none; font-family:inherit;',
     '}',
     '#ae-chat-send {',
-    '  background:#007994; color:white; border:none;',
+    '  background:#6248DA; color:white; border:none;',
     '  border-radius:10px; padding:10px 18px;',
     '  cursor:pointer; font-size:14px; font-weight:600;',
     '}',
-    '#ae-chat-send:hover { background:#006880; }',
+    '#ae-chat-send:hover { background:#5040c4; }',
     '#ae-chat-send:disabled { opacity:0.5; cursor:not-allowed; }',
     '#ae-scroll-btns {',
     '  display:flex; justify-content:flex-end; gap:6px;',
@@ -127,7 +133,7 @@
     '}',
     '#ae-callback-back {',
     '  background:none; border:none; cursor:pointer;',
-    '  color:#007994; font-size:14px; font-weight:600; padding:4px 0;',
+    '  color:#6248DA; font-size:14px; font-weight:600; padding:4px 0;',
     '}',
     '#ae-callback-title { font-size:24px; font-weight:700; color:#1e293b; }',
     '#ae-callback-body {',
@@ -151,16 +157,16 @@
     '  font-size:13px; color:#64748b; cursor:pointer; background:white;',
     '  text-align:center; font-family:inherit; transition:all 0.15s;',
     '}',
-    '.ae-cb-radio-opt.ae-selected { background:#007994; color:white; border-color:#007994; font-weight:600; }',
+    '.ae-cb-radio-opt.ae-selected { background:#6248DA; color:white; border-color:#6248DA; font-weight:600; }',
     '#ae-cb-disclaimer { font-size:12px; color:#64748b; line-height:1.5; margin:0; }',
-    '#ae-cb-disclaimer a { color:#007994; }',
+    '#ae-cb-disclaimer a { color:#6248DA; }',
     '.ae-cb-send-row { display:flex; justify-content:flex-end; }',
     '#ae-cb-send {',
-    '  background:#007994; color:white; border:none;',
+    '  background:#6248DA; color:white; border:none;',
     '  border-radius:10px; padding:11px 28px;',
     '  cursor:pointer; font-size:14px; font-weight:600;',
     '}',
-    '#ae-cb-send:hover { background:#006880; }',
+    '#ae-cb-send:hover { background:#5040c4; }',
     '#ae-cb-send:disabled { opacity:0.5; cursor:not-allowed; }',
     '@media (max-width:480px) {',
     '  #ae-chat-panel {',
