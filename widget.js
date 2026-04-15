@@ -48,7 +48,12 @@
     '  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;',
     '  border-bottom:1px solid rgba(255,255,255,0.07);',
     '}',
-    '#ae-header-spacer { width:22px; flex-shrink:0; }',
+    '#ae-header-spacer { width:32px; flex-shrink:0; }',
+    '#ae-header-orb {',
+    '  display:none; width:32px; height:32px; border-radius:50%; flex-shrink:0;',
+    '  background:radial-gradient(circle at 35% 35%, #38bdf8 0%, #6248DA 52%, #ec4899 100%);',
+    '  animation:ae-orb-pulse 3s ease-in-out infinite;',
+    '}',
     '#ae-client-name {',
     '  font-family:"Oswald",sans-serif; font-weight:600; font-size:18px;',
     '  letter-spacing:1.5px; text-align:center; flex:1; color:white;',
@@ -59,14 +64,33 @@
     /* ── Chat view wrapper ── */
     '#ae-chat-view { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; }',
 
+    /* ── Orb animation ── */
+    '@keyframes ae-orb-pulse {',
+    '  0%,100% {',
+    '    transform:scale(1);',
+    '    box-shadow:0 0 18px rgba(98,72,218,0.35), 0 0 36px rgba(56,189,248,0.12);',
+    '  }',
+    '  50% {',
+    '    transform:scale(1.07);',
+    '    box-shadow:0 0 36px rgba(98,72,218,0.65), 0 0 64px rgba(56,189,248,0.28), 0 0 90px rgba(236,72,153,0.18);',
+    '  }',
+    '}',
+
     /* ── Orb welcome state ── */
     '#ae-orb-welcome {',
     '  display:flex; flex-direction:column; align-items:center;',
     '  justify-content:center; flex:1; gap:20px; padding:20px 20px 12px;',
+    '  overflow:hidden;',
+    '  transition:max-height 0.45s ease, opacity 0.35s ease, padding 0.4s ease;',
+    '  max-height:600px;',
+    '}',
+    '#ae-orb-welcome.ae-collapsed {',
+    '  max-height:0; opacity:0; padding:0; flex:0;',
     '}',
     '#ae-orb {',
     '  width:110px; height:110px; border-radius:50%; flex-shrink:0;',
     '  background:radial-gradient(circle at 35% 35%, #38bdf8 0%, #6248DA 52%, #ec4899 100%);',
+    '  animation:ae-orb-pulse 3s ease-in-out infinite;',
     '}',
     '#ae-orb-privacy {',
     '  font-size:12px; color:rgba(255,255,255,0.4);',
@@ -151,7 +175,6 @@
     '}',
     '#ae-qa-logo { height:54px; width:auto; opacity:0.80; filter:brightness(0) invert(1); }',
     '#ae-qa-logo-link { display:inline-flex; align-items:center; outline:none; border:none; }',
-    '#ae-powered { font-size:12px; color:rgba(255,255,255,0.3); margin-top:4px; font-weight:500; }',
 
     /* ── Callback view ── */
     '#ae-callback-view { display:none; flex-direction:column; flex:1; min-height:0; overflow:hidden; }',
@@ -230,6 +253,7 @@
   /* ── Header HTML ────────────────────────────────────────────────────── */
   var headerHtml =
     '<div id="ae-chat-header">' +
+      '<div id="ae-header-orb"></div>' +
       '<div id="ae-header-spacer"></div>' +
       '<span id="ae-client-name">DIGITAL AGENT</span>' +
       '<span id="ae-chat-close">&#x2715;</span>' +
@@ -263,7 +287,6 @@
         '<a id="ae-qa-logo-link" href="https://qadigitalads.com/en/home/" target="_blank" rel="noopener">' +
           '<img id="ae-qa-logo" src="' + footerLogoSrc + '" alt="QA Digital">' +
         '</a>' +
-        '<span id="ae-powered">Powered by QA Digital</span>' +
       '</div>' +
     '</div>';
 
@@ -352,8 +375,11 @@
   function dismissOrb() {
     if (!orbDismissed) {
       orbDismissed = true;
-      orbWelcome.style.display = 'none';
+      orbWelcome.classList.add('ae-collapsed');
+      document.getElementById('ae-header-orb').style.display = 'block';
+      document.getElementById('ae-header-spacer').style.display = 'none';
       messages.style.display = 'flex';
+      setTimeout(function () { orbWelcome.style.display = 'none'; }, 450);
     }
   }
 
