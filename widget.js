@@ -46,7 +46,7 @@
     '  height:74px; width:74px;',
     '  object-fit:contain; border-radius:8px; background:white; padding:3px; flex-shrink:0;',
     '}',
-    '#ae-client-name { font-family:"Oswald",sans-serif; font-weight:600; font-size:18px; letter-spacing:0.5px; }',
+    '#ae-client-name { font-family:"Oswald",sans-serif; font-weight:600; font-size:18px; letter-spacing:0.5px; flex:1; text-align:center; }',
     '#ae-chat-close { cursor:pointer; font-size:22px; line-height:1; }',
     /* ── Chat view ── */
     '#ae-chat-view { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; }',
