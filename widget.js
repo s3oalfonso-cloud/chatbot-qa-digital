@@ -6,7 +6,8 @@
   var CLIENT_EMAIL       = '__CLIENT_EMAIL__';
   var CLIENT_PRIVACY_URL = '__CLIENT_PRIVACY_URL__';
 
-  var displayName = CLIENT_NAME || 'Chat with Us';
+  var displayName    = CLIENT_NAME || 'Chat with Us';
+  var footerLogoSrc  = CLIENT_LOGO || (API_URL + '/logo.svg');
 
   /* ── Google Fonts ───────────────────────────────────────────────────── */
   var fontLink = document.createElement('link');
@@ -17,50 +18,70 @@
   /* ── Styles ─────────────────────────────────────────────────────────── */
   var style = document.createElement('style');
   style.textContent = [
+    /* ── Floating button ── */
     '#ae-chat-btn {',
     '  position:fixed; bottom:28px; right:28px;',
     '  width:60px; height:60px;',
     '  background:#6248DA; border-radius:50%;',
     '  cursor:pointer; display:flex;',
     '  align-items:center; justify-content:center;',
-    '  box-shadow:0 4px 16px rgba(0,0,0,0.18);',
+    '  box-shadow:0 4px 20px rgba(98,72,218,0.5);',
     '  z-index:99999; border:none; transition:transform 0.2s;',
     '}',
     '#ae-chat-btn:hover { transform:scale(1.08); }',
+
+    /* ── Panel ── */
     '#ae-chat-panel {',
     '  position:fixed; bottom:100px; right:28px;',
-    '  width:410px; background:white;',
+    '  width:410px; background:#0e0e1e;',
     '  border-radius:16px; display:none; flex-direction:column;',
-    '  box-shadow:0 8px 32px rgba(0,0,0,0.18);',
+    '  box-shadow:0 8px 40px rgba(0,0,0,0.55);',
     '  z-index:99999; overflow:hidden;',
     '  max-height:calc(100vh - 130px);',
     '  font-family:"Montserrat",-apple-system,BlinkMacSystemFont,sans-serif;',
     '}',
+
+    /* ── Header ── */
     '#ae-chat-header {',
-    '  background:#1E385F; color:white;',
-    '  padding:14px 18px;',
+    '  background:#0e0e1e; color:white;',
+    '  padding:16px 18px;',
     '  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;',
+    '  border-bottom:1px solid rgba(255,255,255,0.07);',
     '}',
-    '#ae-header-spacer { width:32px; flex-shrink:0; }',
-    '#ae-header-center {',
-    '  display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;',
+    '#ae-header-spacer { width:22px; flex-shrink:0; }',
+    '#ae-client-name {',
+    '  font-family:"Oswald",sans-serif; font-weight:600; font-size:18px;',
+    '  letter-spacing:1.5px; text-align:center; flex:1; color:white;',
     '}',
-    '#ae-client-logo {',
-    '  height:70px; width:70px;',
-    '  object-fit:contain; border-radius:8px; background:white; padding:3px; flex-shrink:0;',
-    '}',
-    '#ae-client-name { font-family:"Oswald",sans-serif; font-weight:600; font-size:16px; letter-spacing:0.5px; text-align:center; }',
-    '#ae-chat-close { cursor:pointer; font-size:22px; line-height:1; align-self:flex-start; }',
-    /* ── Chat view ── */
+    '#ae-chat-close { cursor:pointer; font-size:20px; line-height:1; color:rgba(255,255,255,0.6); }',
+    '#ae-chat-close:hover { color:white; }',
+
+    /* ── Chat view wrapper ── */
     '#ae-chat-view { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; }',
-    '#ae-privacy-notice {',
-    '  background:#f0f9ff; border-bottom:1px solid #bae6fd;',
-    '  padding:10px 16px; font-size:13px; color:#0c4a6e; line-height:1.5; flex-shrink:0;',
+
+    /* ── Orb welcome state ── */
+    '#ae-orb-welcome {',
+    '  display:flex; flex-direction:column; align-items:center;',
+    '  justify-content:center; flex:1; gap:20px; padding:20px 20px 12px;',
     '}',
-    '#ae-privacy-notice a { color:#0369a1; }',
+    '#ae-orb {',
+    '  width:110px; height:110px; border-radius:50%; flex-shrink:0;',
+    '  background:radial-gradient(circle at 35% 35%, #38bdf8 0%, #6248DA 52%, #ec4899 100%);',
+    '}',
+    '#ae-orb-privacy {',
+    '  font-size:12px; color:rgba(255,255,255,0.4);',
+    '  text-align:center; line-height:1.5; max-width:330px;',
+    '}',
+    '#ae-orb-privacy a { color:rgba(255,255,255,0.55); text-decoration:underline; }',
+    '#ae-orb-welcome-text {',
+    '  font-size:20px; font-weight:600; color:white;',
+    '  text-align:center; line-height:1.4; max-width:290px;',
+    '}',
+
+    /* ── Chat messages ── */
     '#ae-chat-messages {',
     '  flex:1; min-height:0; overflow-y:scroll; padding:16px;',
-    '  display:flex; flex-direction:column; gap:12px;',
+    '  display:none; flex-direction:column; gap:12px;',
     '  -webkit-overflow-scrolling:touch; overscroll-behavior:contain;',
     '}',
     '.ae-msg {',
@@ -72,96 +93,100 @@
     '  align-self:flex-end; border-radius:12px 12px 4px 12px;',
     '}',
     '.ae-msg.assistant {',
-    '  background:#f1f5f9; color:#1e293b;',
+    '  background:#1a1a32; color:#e2e8f0;',
     '  align-self:flex-start; border-radius:12px 12px 12px 4px;',
     '}',
-    '#ae-chat-typing {',
-    '  color:#94a3b8; font-size:13px;',
-    '  padding:0 16px 8px; display:none;',
+    '#ae-chat-typing { color:rgba(255,255,255,0.35); font-size:13px; padding:0 16px 8px; display:none; }',
+
+    /* ── Scroll buttons ── */
+    '#ae-scroll-btns {',
+    '  display:flex; justify-content:flex-end; gap:6px;',
+    '  padding:4px 12px; border-top:1px solid rgba(255,255,255,0.07); flex-shrink:0;',
     '}',
+    '.ae-scroll-btn {',
+    '  background:#1a1a32; border:1px solid rgba(255,255,255,0.1); border-radius:6px;',
+    '  padding:2px 14px; cursor:pointer; font-size:15px; color:#94a3b8; line-height:1.6;',
+    '}',
+    '.ae-scroll-btn:hover { background:#252545; }',
+
+    /* ── Input row ── */
     '#ae-chat-input-row {',
-    '  display:flex; padding:12px; border-top:1px solid #e2e8f0; gap:8px; flex-shrink:0;',
+    '  display:flex; padding:12px; border-top:1px solid rgba(255,255,255,0.07); gap:8px; flex-shrink:0;',
     '}',
     '#ae-chat-input {',
-    '  flex:1; border:1px solid #e2e8f0; border-radius:10px;',
-    '  padding:10px 14px; font-size:14px; outline:none;',
+    '  flex:1; border:none; border-radius:24px;',
+    '  padding:10px 16px; font-size:14px; outline:none;',
     '  resize:none; font-family:inherit;',
+    '  background:white; color:#1e293b;',
     '}',
     '#ae-chat-send {',
     '  background:#6248DA; color:white; border:none;',
-    '  border-radius:10px; padding:10px 18px;',
+    '  border-radius:24px; padding:10px 20px;',
     '  cursor:pointer; font-size:14px; font-weight:600;',
     '}',
     '#ae-chat-send:hover { background:#5040c4; }',
-    '#ae-chat-send:disabled { opacity:0.5; cursor:not-allowed; }',
-    '#ae-scroll-btns {',
-    '  display:flex; justify-content:flex-end; gap:6px;',
-    '  padding:4px 12px; border-top:1px solid #e2e8f0; flex-shrink:0;',
-    '}',
-    '.ae-scroll-btn {',
-    '  background:#f1f5f9; border:1px solid #e2e8f0; border-radius:6px;',
-    '  padding:2px 14px; cursor:pointer; font-size:15px; color:#64748b; line-height:1.6;',
-    '}',
-    '.ae-scroll-btn:hover { background:#e2e8f0; }',
+    '#ae-chat-send:disabled { opacity:0.4; cursor:not-allowed; }',
+
     /* ── Footer ── */
     '#ae-chat-footer {',
     '  display:flex; flex-direction:column; align-items:stretch;',
-    '  border-top:1px solid #e2e8f0; background:#f8fafc; flex-shrink:0;',
+    '  background:#0e0e1e; flex-shrink:0;',
     '}',
     '#ae-action-buttons {',
-    '  display:flex; flex-direction:row; gap:8px;',
-    '  padding:16px 16px 8px;',
+    '  display:flex; flex-direction:row;',
+    '  padding:14px 16px 8px; justify-content:center; gap:24px;',
     '}',
     '.ae-action-btn {',
-    '  flex:1; display:flex; align-items:center; justify-content:center; gap:8px;',
-    '  padding:12px 8px; border-radius:10px;',
-    '  background:#f1f5f9; color:#1e293b;',
-    '  text-decoration:none; font-size:13px; font-weight:500;',
-    '  border:1px solid #e2e8f0; transition:background 0.15s; cursor:pointer;',
+    '  display:flex; align-items:center; gap:6px;',
+    '  padding:4px 0; background:transparent; border:none;',
+    '  color:rgba(255,255,255,0.6); text-decoration:none;',
+    '  font-size:13px; font-weight:500; cursor:pointer;',
+    '  font-family:inherit; transition:color 0.15s;',
     '}',
-    '.ae-action-btn:hover { background:#e2e8f0; }',
-    '.ae-action-icon { font-size:16px; }',
+    '.ae-action-btn:hover { color:white; }',
+    '.ae-action-icon { font-size:15px; }',
     '#ae-qa-branding {',
     '  display:flex; flex-direction:column; align-items:center;',
-    '  padding:12px 24px 16px;',
+    '  padding:8px 24px 16px;',
     '}',
-    '#ae-qa-logo { height:54px; width:auto; opacity:0.90; }',
+    '#ae-qa-logo { height:54px; width:auto; opacity:0.80; filter:brightness(0) invert(1); }',
     '#ae-qa-logo-link { display:inline-flex; align-items:center; outline:none; border:none; }',
-    '#ae-powered { font-size:12px; color:#64748b; margin-top:4px; font-weight:500; }',
+    '#ae-powered { font-size:12px; color:rgba(255,255,255,0.3); margin-top:4px; font-weight:500; }',
+
     /* ── Callback view ── */
     '#ae-callback-view { display:none; flex-direction:column; flex:1; min-height:0; overflow:hidden; }',
     '#ae-callback-header {',
     '  display:flex; align-items:center; gap:12px;',
-    '  padding:14px 16px; border-bottom:1px solid #e2e8f0; flex-shrink:0;',
+    '  padding:14px 16px; border-bottom:1px solid rgba(255,255,255,0.07); flex-shrink:0;',
     '}',
     '#ae-callback-back {',
     '  background:none; border:none; cursor:pointer;',
     '  color:#6248DA; font-size:14px; font-weight:600; padding:4px 0;',
     '}',
-    '#ae-callback-title { font-size:24px; font-weight:700; color:#1e293b; }',
+    '#ae-callback-title { font-size:20px; font-weight:700; color:white; }',
     '#ae-callback-body {',
     '  padding:16px; display:flex; flex-direction:column; gap:12px;',
     '  flex:1; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch;',
     '}',
-    '#ae-callback-desc { font-size:15px; color:#334155; margin:0; }',
+    '#ae-callback-desc { font-size:15px; color:#94a3b8; margin:0; }',
     '.ae-cb-row { display:flex; gap:10px; }',
     '.ae-cb-row .ae-cb-input { flex:1; min-width:0; }',
     '.ae-cb-input, .ae-cb-textarea {',
     '  width:100%; box-sizing:border-box;',
-    '  border:1px solid #e2e8f0; border-radius:8px;',
+    '  border:1px solid rgba(255,255,255,0.1); border-radius:8px;',
     '  padding:10px 12px; font-size:13px; font-family:inherit; outline:none;',
-    '  background:white; color:#1e293b;',
+    '  background:#1a1a32; color:white;',
     '}',
     '.ae-cb-textarea { resize:vertical; min-height:80px; }',
-    '#ae-cb-text-label { font-size:13px; color:#64748b; margin:0; }',
+    '#ae-cb-text-label { font-size:13px; color:#94a3b8; margin:0; }',
     '#ae-cb-text-group { display:flex; gap:8px; }',
     '.ae-cb-radio-opt {',
-    '  flex:1; padding:10px 8px; border:1.5px solid #e2e8f0; border-radius:8px;',
-    '  font-size:13px; color:#64748b; cursor:pointer; background:white;',
+    '  flex:1; padding:10px 8px; border:1.5px solid rgba(255,255,255,0.1); border-radius:8px;',
+    '  font-size:13px; color:#94a3b8; cursor:pointer; background:#1a1a32;',
     '  text-align:center; font-family:inherit; transition:all 0.15s;',
     '}',
     '.ae-cb-radio-opt.ae-selected { background:#6248DA; color:white; border-color:#6248DA; font-weight:600; }',
-    '#ae-cb-disclaimer { font-size:12px; color:#64748b; line-height:1.5; margin:0; }',
+    '#ae-cb-disclaimer { font-size:12px; color:rgba(255,255,255,0.3); line-height:1.5; margin:0; }',
     '#ae-cb-disclaimer a { color:#6248DA; }',
     '.ae-cb-send-row { display:flex; justify-content:flex-end; }',
     '#ae-cb-send {',
@@ -171,6 +196,8 @@
     '}',
     '#ae-cb-send:hover { background:#5040c4; }',
     '#ae-cb-send:disabled { opacity:0.5; cursor:not-allowed; }',
+
+    /* ── Mobile ── */
     '@media (max-width:480px) {',
     '  #ae-chat-panel {',
     '    position:fixed; inset:0; width:100%; height:100%;',
@@ -181,11 +208,11 @@
   ].join(' ');
   document.head.appendChild(style);
 
-  /* ── Privacy notice text ────────────────────────────────────────────── */
+  /* ── Privacy text (orb state) ───────────────────────────────────────── */
   var privacyLinkOpen  = CLIENT_PRIVACY_URL ? '<a href="' + CLIENT_PRIVACY_URL + '" target="_blank">' : '<span>';
   var privacyLinkClose = CLIENT_PRIVACY_URL ? '</a>' : '</span>';
-  var privacyNoticeHtml =
-    '<div id="ae-privacy-notice">' +
+  var privacyOrbHtml =
+    '<div id="ae-orb-privacy">' +
       'By using this chat, you agree to our collection and processing of conversation data in accordance with our ' +
       privacyLinkOpen + 'Privacy Policy' + privacyLinkClose + '.' +
     '</div>';
@@ -200,21 +227,15 @@
     displayName + ' related to your inquiry. Message frequency varies. Msg &amp; data rates may apply. ' +
     'Reply STOP to opt out or HELP for help. Consent to receive text messages is not required to submit this form or receive services.';
 
-  /* ── Build header HTML ──────────────────────────────────────────────── */
-  var logoHtml = CLIENT_LOGO
-    ? '<img id="ae-client-logo" src="' + CLIENT_LOGO + '" alt="">'
-    : '';
+  /* ── Header HTML ────────────────────────────────────────────────────── */
   var headerHtml =
     '<div id="ae-chat-header">' +
       '<div id="ae-header-spacer"></div>' +
-      '<div id="ae-header-center">' +
-        logoHtml +
-        '<span id="ae-client-name">' + displayName + '</span>' +
-      '</div>' +
+      '<span id="ae-client-name">DIGITAL AGENT</span>' +
       '<span id="ae-chat-close">&#x2715;</span>' +
     '</div>';
 
-  /* ── Build action buttons (always shown) ────────────────────────────── */
+  /* ── Action buttons ─────────────────────────────────────────────────── */
   var actionHtml = '<div id="ae-action-buttons">';
   if (CLIENT_PHONE) {
     actionHtml +=
@@ -234,19 +255,19 @@
     '</button>';
   actionHtml += '</div>';
 
-  /* ── Footer: action buttons + QA branding ──────────────────────────── */
+  /* ── Footer ─────────────────────────────────────────────────────────── */
   var footerHtml =
     '<div id="ae-chat-footer">' +
       actionHtml +
       '<div id="ae-qa-branding">' +
         '<a id="ae-qa-logo-link" href="https://qadigitalads.com/en/home/" target="_blank" rel="noopener">' +
-          '<img id="ae-qa-logo" src="' + API_URL + '/qa-logo.png" alt="QA Digital">' +
+          '<img id="ae-qa-logo" src="' + footerLogoSrc + '" alt="QA Digital">' +
         '</a>' +
         '<span id="ae-powered">Powered by QA Digital</span>' +
       '</div>' +
     '</div>';
 
-  /* ── Callback form view ─────────────────────────────────────────────── */
+  /* ── Callback view ──────────────────────────────────────────────────── */
   var callbackViewHtml =
     '<div id="ae-callback-view">' +
       '<div id="ae-callback-header">' +
@@ -282,17 +303,19 @@
     '<div id="ae-chat-panel">' +
       headerHtml +
       '<div id="ae-chat-view">' +
-        privacyNoticeHtml +
-        '<div id="ae-chat-messages">' +
-          '<div class="ae-msg assistant">Hello! Welcome to ' + displayName + '. How can I help you today?</div>' +
+        '<div id="ae-orb-welcome">' +
+          '<div id="ae-orb"></div>' +
+          privacyOrbHtml +
+          '<div id="ae-orb-welcome-text">Hello! Welcome to ' + displayName + '. How can I help you today?</div>' +
         '</div>' +
+        '<div id="ae-chat-messages"></div>' +
         '<div id="ae-chat-typing">Typing...</div>' +
         '<div id="ae-scroll-btns">' +
           '<button class="ae-scroll-btn" id="ae-scroll-up">&#9650;</button>' +
           '<button class="ae-scroll-btn" id="ae-scroll-down">&#9660;</button>' +
         '</div>' +
         '<div id="ae-chat-input-row">' +
-          '<textarea id="ae-chat-input" placeholder="Type your message..." rows="1"></textarea>' +
+          '<textarea id="ae-chat-input" placeholder="Type your message here..." rows="1"></textarea>' +
           '<button id="ae-chat-send">Send</button>' +
         '</div>' +
         footerHtml +
@@ -308,6 +331,7 @@
   var callbackView = document.getElementById('ae-callback-view');
   var closeBtn     = document.getElementById('ae-chat-close');
   var messages     = document.getElementById('ae-chat-messages');
+  var orbWelcome   = document.getElementById('ae-orb-welcome');
   var input        = document.getElementById('ae-chat-input');
   var sendBtn      = document.getElementById('ae-chat-send');
   var typing       = document.getElementById('ae-chat-typing');
@@ -322,6 +346,16 @@
   var callBtn      = document.getElementById('ae-call-btn');
   var sessionId    = null;
   var isOpen       = false;
+  var orbDismissed = false;
+
+  /* ── Orb → chat transition ──────────────────────────────────────────── */
+  function dismissOrb() {
+    if (!orbDismissed) {
+      orbDismissed = true;
+      orbWelcome.style.display = 'none';
+      messages.style.display = 'flex';
+    }
+  }
 
   /* ── View switching ─────────────────────────────────────────────────── */
   function showChatView() {
@@ -372,8 +406,8 @@
       .replace(/>/g, '&gt;')
       .replace(/^#{1,3}\s+(.+)$/gm, '<strong>$1</strong>')
       .replace(/\[cta\]([\s\S]*?)\[\/cta\]/g, '<em style="color:#38bdf8;font-style:italic">$1</em>')
-      .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:#0369a1;text-decoration:underline">$1</a>')
-      .replace(/(^|[^"'=(>])(https?:\/\/[^\s<"*]+)/g, '$1<a href="$2" target="_blank" rel="noopener" style="color:#0369a1;text-decoration:underline">$2</a>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline">$1</a>')
+      .replace(/(^|[^"'=(>])(https?:\/\/[^\s<"*]+)/g, '$1<a href="$2" target="_blank" rel="noopener" style="color:#38bdf8;text-decoration:underline">$2</a>')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/^[-*]\s+(.+)$/gm, '&bull; $1')
@@ -383,6 +417,7 @@
   }
 
   function addMessage(role, content) {
+    dismissOrb();
     var msg = document.createElement('div');
     msg.className = 'ae-msg ' + role;
     msg.appendChild(renderMarkdown(content));
@@ -391,6 +426,7 @@
   }
 
   function showInjectionBlock() {
+    dismissOrb();
     var msg = document.createElement('div');
     msg.className = 'ae-msg assistant';
     var phone = CLIENT_PHONE ? '<br><br><strong>' + CLIENT_PHONE + '</strong>' : '';
