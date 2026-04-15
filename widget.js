@@ -38,16 +38,19 @@
     '}',
     '#ae-chat-header {',
     '  background:#1E385F; color:white;',
-    '  padding:12px 18px;',
+    '  padding:14px 18px;',
     '  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;',
     '}',
-    '#ae-header-left { display:flex; align-items:center; gap:12px; flex:1; }',
+    '#ae-header-spacer { width:32px; flex-shrink:0; }',
+    '#ae-header-center {',
+    '  display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;',
+    '}',
     '#ae-client-logo {',
-    '  height:74px; width:74px;',
+    '  height:70px; width:70px;',
     '  object-fit:contain; border-radius:8px; background:white; padding:3px; flex-shrink:0;',
     '}',
-    '#ae-client-name { font-family:"Oswald",sans-serif; font-weight:600; font-size:18px; letter-spacing:0.5px; flex:1; text-align:center; }',
-    '#ae-chat-close { cursor:pointer; font-size:22px; line-height:1; }',
+    '#ae-client-name { font-family:"Oswald",sans-serif; font-weight:600; font-size:16px; letter-spacing:0.5px; text-align:center; }',
+    '#ae-chat-close { cursor:pointer; font-size:22px; line-height:1; align-self:flex-start; }',
     /* ── Chat view ── */
     '#ae-chat-view { display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden; }',
     '#ae-privacy-notice {',
@@ -203,7 +206,8 @@
     : '';
   var headerHtml =
     '<div id="ae-chat-header">' +
-      '<div id="ae-header-left">' +
+      '<div id="ae-header-spacer"></div>' +
+      '<div id="ae-header-center">' +
         logoHtml +
         '<span id="ae-client-name">' + displayName + '</span>' +
       '</div>' +
