@@ -349,6 +349,12 @@ def get_qa_logo():
     return FileResponse(logo_path, media_type="image/png")
 
 
+@app.get("/logo.svg")
+def get_logo_svg():
+    logo_path = os.path.join(os.path.dirname(__file__), "logo.svg")
+    return FileResponse(logo_path, media_type="image/svg+xml")
+
+
 @app.post("/api/chat/session")
 def create_session(request: Request):
     ip = request.client.host
